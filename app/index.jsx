@@ -3,6 +3,7 @@ import ReactDOM, { render } from 'react-dom'
 import { Router, IndexRoute, Route, Link, browserHistory } from 'react-router'
 import Modal from 'react-modal'
 import a11y from 'react-a11y'
+import Masonry from 'masonry-layout'
 
 a11y(React)
 
@@ -24,7 +25,7 @@ class Gif extends Component {
   }
 
   render() {
-    const { images, source } = this.props
+    const { className, images, source } = this.props
     const image = images.original
     const { modalIsVisible } = this.state
 
@@ -33,13 +34,16 @@ class Gif extends Component {
       background: 'none'
     }
 
+    const width = Math.min(400, image.width)
+    const height = image.height * (width / image.width)
+
     return (
-      <div className="inline">
+      <div className={`${className} inline`}>
         <button className="Button--plain" onClick={this.openModal.bind(this)}>
           <img
             src={image.webp}
-            width={image.width / 2}
-            height={image.height / 2}
+            width={width / 2}
+            height={height / 2}
             alt={`Trending from ${source}`}
           />
         </button>
@@ -70,10 +74,16 @@ class Gifs extends Component {
     }
   }
 
+  initMasonry(grid) {
+    const masonry = new Masonry(grid, {
+      itemSelector: '.masonry-item'
+    })
+  }
+
   render() {
     return (
-      <div>
-        {this.state.gifs.map((gif) => <Gif key={gif.id} {...gif} />)}
+      <div ref={this.initMasonry.bind(this)}>
+        {this.state.gifs.map((gif) => <Gif className="masonry-item" key={gif.id} {...gif} />)}
       </div>
     )
   }
