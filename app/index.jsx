@@ -16,6 +16,17 @@ class Gif extends Component {
     this.state = { modalIsVisible: false }
   }
 
+  componentDidMount() {
+    const imageObj = this.props.images.fixed_width_small_still
+    const image = new Image(imageObj.width, imageObj.height)
+    const colorThief = new ColorThief()
+    image.addEventListener('load', () => {
+      this.setState({ dominantColor: colorThief.getColor(image) })
+    })
+    image.crossOrigin = 'Anonymous'
+    image.src = imageObj.url
+  }
+
   closeModal() {
     this.setState({ modalIsVisible: false })
   }
@@ -37,6 +48,11 @@ class Gif extends Component {
     const width = Math.min(400, image.width)
     const height = image.height * (width / image.width)
 
+    const c = this.state.dominantColor
+    const imageStyle = (!c) ? {} : {
+      border: `8px solid rgb(${c[0]}, ${c[1]}, ${c[2]})`
+    }
+
     return (
       <div className={`${className} inline`}>
         <button className="Button--plain" onClick={this.openModal.bind(this)}>
@@ -45,6 +61,7 @@ class Gif extends Component {
             width={width / 2}
             height={height / 2}
             alt={`Trending from ${source}`}
+            style={imageStyle}
           />
         </button>
 
