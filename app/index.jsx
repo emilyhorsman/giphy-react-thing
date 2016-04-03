@@ -5,7 +5,9 @@ import Modal from 'react-modal'
 import a11y from 'react-a11y'
 import Masonry from 'masonry-layout'
 
-a11y(React)
+if (process.env.NODE_ENV !== 'production') {
+  a11y(React)
+}
 
 import './styles.scss'
 
