@@ -10,17 +10,52 @@ import './styles.scss'
 
 
 class Gif extends Component {
+  constructor() {
+    super()
+    this.state = { modalIsVisible: false }
+  }
+
+  closeModal() {
+    this.setState({ modalIsVisible: false })
+  }
+
+  openModal() {
+    this.setState({ modalIsVisible: true })
+  }
+
   render() {
     const { images, source } = this.props
-    const stillImage = images.fixed_width_still
+    const image = images.fixed_height_small
+    const { modalIsVisible } = this.state
+
+    const buttonStyle = {
+      border: 0,
+      background: 'none'
+    }
 
     return (
-      <img
-        src={stillImage.url}
-        width={stillImage.width}
-        height={stillImage.height}
-        alt={`Trending from ${source}`}
-      />
+      <div className="inline">
+        <button className="Button--plain" onClick={this.openModal.bind(this)}>
+          <img
+            src={image.webp}
+            width={image.width}
+            height={image.height}
+            alt={`Trending from ${source}`}
+          />
+        </button>
+
+        <Modal
+          onRequestClose={this.closeModal.bind(this)}
+          isOpen={modalIsVisible}>
+
+          <img
+            src={images.original.webp}
+            width={images.original.width}
+            height={images.original.height}
+          />
+
+        </Modal>
+      </div>
     )
   }
 }
