@@ -25,7 +25,7 @@ class Gif extends Component {
 
   render() {
     const { images, source } = this.props
-    const image = images.fixed_height_small
+    const image = images.original
     const { modalIsVisible } = this.state
 
     const buttonStyle = {
@@ -38,8 +38,8 @@ class Gif extends Component {
         <button className="Button--plain" onClick={this.openModal.bind(this)}>
           <img
             src={image.webp}
-            width={image.width}
-            height={image.height}
+            width={image.width / 2}
+            height={image.height / 2}
             alt={`Trending from ${source}`}
           />
         </button>
