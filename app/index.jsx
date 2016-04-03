@@ -53,11 +53,13 @@ class Gif extends Component {
       border: `8px solid rgb(${c[0]}, ${c[1]}, ${c[2]})`
     }
 
+    const url = (typeof Modernizr.webp !== 'undefined' && Modernizr.webp.animation) ? image.webp : image.url
+
     return (
       <div className={`${className} inline`}>
         <button className="Button--plain" onClick={this.openModal.bind(this)}>
           <img
-            src={image.webp}
+            src={url}
             width={width / 2}
             height={height / 2}
             alt={`Trending from ${source}`}
